@@ -5,6 +5,7 @@ export default class Spaceship {
     #moveModifier = 2;
     #leftArrow = false;
     #rightArrow = false;
+    #bullets = 3;
 
     constructor(element, container) {
         this.element = element;
@@ -61,13 +62,26 @@ export default class Spaceship {
     #whatKey() {
         if (this.#leftArrow && this.#getPosition() > 12) {
             this.element.style.left = `${parseInt(this.element.style.left, 10) - this.#moveModifier}px`;
+            this.element.style.transform = 'rotateY(-30deg)';
         }
         else if (this.#rightArrow && this.#getPosition() + 12 < window.innerWidth) {
             this.element.style.left = `${parseInt(this.element.style.left, 10) + this.#moveModifier}px`;
+            this.element.style.transform = 'rotateY(30deg)';
+        }
+        else {
+            this.element.style.transform = 'rotateY(0deg)';
         }
     }
 
     #shot() {
+        if (this.#bullets <= 0) {
+            setTimeout(1000);
+
+            this.#bullets = 3;
+            return;
+        }
+
+        this.#bullets--;
         const missile = new Missile(this.#getPosition(), this.element.offsetTop, this.container);
         missile.init();
         this.missiles.push(missile);

@@ -110,7 +110,7 @@ class Game {
 
     #updateScore() {
         this.#score++;
-        if (!(this.#score % 5)) {
+        if (!(this.#score % 50)) {
             this.#enemiesInterval--;
         }
         this.#updateScoreText();
