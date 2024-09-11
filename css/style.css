@@ -1,0 +1,186 @@
+:root {
+    --primaryColor: #09fcfd;
+    --secondaryColor: #510303;
+    --sizeUnit: 64px;
+    --spaceShipDuration: 200ms;
+    --explosionsDuration: 600ms;
+}
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    transition: .5s;
+    position: relative;
+}
+
+.information {
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    font-size: 32px;
+    z-index: 2;
+    position: relative;
+}
+
+.modal {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-text {
+    font-size: 42px;
+    text-align: center;
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-button {
+    padding: 30px 15px;
+    background-color: transparent;
+    border: 3px solid var(--primaryColor);
+    color: var(--primaryColor);
+    cursor: pointer;
+    font-size: 42px;
+    margin-top: 20px;
+    outline: none;
+    transition: .1s ease-in;
+}
+
+.modal-button:hover {
+    box-shadow: 0px 0px 20px 5px var(--primaryColor);
+}
+
+.hide {
+    display: none;
+}
+
+.hit {
+    background-color: var(--secondaryColor);
+}
+
+.spaceship {
+    width: var(--sizeUnit);
+    height: var(--sizeUnit);
+    background-image: url('../images/ship.png');
+    animation: move var(--spaceShipDuration) steps(8) infinite;
+    position: fixed;
+}
+
+.enemy {
+    width: var(--sizeUnit);
+    height: var(--sizeUnit);
+    background-image: url('../images/enemy.png');
+    animation: enemy-move var(--spaceShipDuration) steps(5) infinite;
+    position: absolute;
+    z-index: 1;
+}
+
+.enemy-big {
+    width: calc(var(--sizeUnit) * 2);
+    height: calc(var(--sizeUnit) * 2);
+    background-image: url('../images/enemy-big.png');
+    animation: enemyBig-move var(--spaceShipDuration) steps(8) infinite;
+    position: absolute;
+}
+
+.explosion {
+    width: var(--sizeUnit);
+    height: var(--sizeUnit);
+    background-image: url('../images/explosion.png');
+    animation: explosion var(--explosionsDuration) steps(17) forwards;
+    position: absolute;
+}
+
+.explosion-big {
+    width: calc(var(--sizeUnit) * 2);
+    height: calc(var(--sizeUnit) * 2);
+    background-image: url('../images/explosion-big.png');
+    animation: explosionBig var(--explosionsDuration) steps(17) forwards;
+    position: absolute;
+}
+
+.missile {
+    background-image: url(../images/missile.png);
+    background-size: cover;
+    width: 12px;
+    height: 24px;
+    position: absolute;
+}
+
+@keyframes move {
+    0% {
+        background-position-x: 0px;
+    }
+
+    100% {
+        background-position-x: calc(var(--sizeUnit) * -8);
+    }
+}
+
+@keyframes enemy-move {
+    0% {
+        background-position-x: 0px;
+    }
+
+    100% {
+        background-position-x: calc(var(--sizeUnit) * -5);
+    }
+}
+
+@keyframes enemyBig-move {
+    0% {
+        background-position-x: 0px;
+    }
+
+    100% {
+        background-position-x: calc(var(--sizeUnit) * -16);
+    }
+}
+
+@keyframes explosion {
+    0% {
+        background-position-x: 0px;
+    }
+
+    100% {
+        background-position-x: calc(var(--sizeUnit) * -17);
+    }
+}
+
+@keyframes explosionBig {
+    0% {
+        background-position-x: 0px;
+    }
+
+    100% {
+        background-position-x: calc(var(--sizeUnit) * -34);
+    }
+}
