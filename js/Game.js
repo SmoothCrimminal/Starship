@@ -18,11 +18,11 @@ class Game {
     #enemiesInterval = 30;
     #checkPositionInterval = null;
     #createEnemyInterval = null;
+    #audio = new Audio('../sounds/main_theme.mp3');
 
     init() {
-        this.#spaceship.init();
-        this.#newGame();
         this.#htmlElements.button.addEventListener('click', () => {
+            this.#spaceship.init();
             this.#newGame();
         })
     }
@@ -37,6 +37,9 @@ class Game {
         this.#spaceship.setPosition();
         this.#checkPositionInterval = setInterval(() => this.#checkPosition(), 1);
         this.#createEnemyInterval = setInterval(() => this.#randomEnemy(), 1000);
+        
+        this.#audio.loop = true;
+        this.#audio.play();
     }
 
     #endGame() {
@@ -46,6 +49,7 @@ class Game {
         this.#enemies.length = 0;
         clearInterval(this.#checkPositionInterval);
         clearInterval(this.#createEnemyInterval);
+        this.#audio.pause();
     }
 
     #checkPosition() {

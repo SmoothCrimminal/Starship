@@ -25,6 +25,7 @@ body {
     background-color: black;
     transition: .5s;
     position: relative;
+    overflow: hidden;
 }
 
 .information {

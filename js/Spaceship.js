@@ -71,5 +71,7 @@ export default class Spaceship {
         const missile = new Missile(this.#getPosition(), this.element.offsetTop, this.container);
         missile.init();
         this.missiles.push(missile);
+        const shotAudio = new Audio('../sounds/singleshot.mp3');
+        shotAudio.play();
     }
 }

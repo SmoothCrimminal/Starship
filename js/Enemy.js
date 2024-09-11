@@ -1,6 +1,7 @@
 export default class Enemy {
 
     #interval = null;
+    #explosionSound = new Audio('../sounds/explo3.mp3');
 
     constructor(container, enemiesInterval, enemyClass, explosionClass, lives = 1) {
         this.container = container;
@@ -41,6 +42,7 @@ export default class Enemy {
         clearInterval(this.#interval);
         const animationTime = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--explosionsDuration'), 10);
         setTimeout(() => this.element.remove(), animationTime);
+        this.#explosionSound.play();
     }
 
     hit() {
