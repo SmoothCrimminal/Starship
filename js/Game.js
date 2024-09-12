@@ -133,6 +133,31 @@ class Game {
                 }
                 
         })
+
+        this.#enemies.forEach(enemy => enemy.missiles.forEach((missile, missileIndex, missilesArray) => {
+            const missilePosition = {
+                top: missile.element.offsetTop,
+                right: missile.element.offsetLeft + missile.element.offsetWidth,
+                bottom: missile.element.offsetTop + missile.element.offsetHeight,
+                left: missile.element.offsetLeft
+            };
+
+            const spaceshipPosition = this.#spaceship.getCoordinates();
+
+            if (missilePosition.bottom >= spaceshipPosition.top &&
+                missilePosition.top <= spaceshipPosition.bottom &&
+                missilePosition.right >= spaceshipPosition.left &&
+                missilePosition.left <= spaceshipPosition.right) {
+                    this.#updateLives();
+                    missile.remove();
+                    missilesArray.splice(missileIndex, 1);
+                }
+
+            if (missilePosition.top > window.innerHeight) {
+                missile.remove();
+                missilesArray.splice(missileIndex, 1);
+            }
+        }))
     }
 
     #randomEnemy() {

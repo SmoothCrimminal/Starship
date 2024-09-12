@@ -136,6 +136,15 @@ body {
     position: absolute;
 }
 
+.enemy-missile {
+    background-image: url(../images/enemy_bullet.png);
+    background-size: cover;
+    width: 24px;
+    height: 24px;
+    transform: rotateX(180deg);
+    position: absolute;
+}
+
 .life {
     background-image: url(../images/life.png);
     background-size: cover;
