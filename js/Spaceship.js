@@ -5,7 +5,9 @@ export default class Spaceship {
     #moveModifier = 2;
     #leftArrow = false;
     #rightArrow = false;
-    #bullets = 3;
+    #currentBullets = 3;
+    #bulletsCount = 3;
+    #collectAudio = new Audio();
 
     constructor(element, container) {
         this.element = element;
@@ -21,6 +23,28 @@ export default class Spaceship {
     setPosition() {
         this.element.style.bottom = '0px';
         this.element.style.left = `${window.innerWidth / 2 - this.#getPosition()}px`;
+    }
+
+    increaseSpeed() {
+        this.#moveModifier++;
+    }
+
+    increaseBullets() {
+        this.#bulletsCount++;
+    }
+
+    collect(audioSource) {
+        this.#collectAudio.src = audioSource;
+        this.#collectAudio.play();
+    }
+
+    getCoordinates() {
+        return {
+            top: this.element.offsetTop,
+            right: this.element.offsetLeft + this.element.offsetWidth,
+            bottom: this.element.offsetTop + this.element.offsetHeight,
+            left: this.element.offsetLeft
+        }
     }
 
     #getPosition() {
@@ -74,14 +98,14 @@ export default class Spaceship {
     }
 
     #shot() {
-        if (this.#bullets <= 0) {
+        if (this.#currentBullets <= 0) {
             setTimeout(1000);
 
-            this.#bullets = 3;
+            this.#currentBullets = this.#bulletsCount;
             return;
         }
 
-        this.#bullets--;
+        this.#currentBullets--;
         const missile = new Missile(this.#getPosition(), this.element.offsetTop, this.container);
         missile.init();
         this.missiles.push(missile);

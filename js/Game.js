@@ -1,5 +1,6 @@
 import Spaceship from "./Spaceship.js";
 import Enemy from "./Enemy.js";
+import Extra from "./Extra.js";
 
 class Game {
     #htmlElements = {
@@ -13,12 +14,15 @@ class Game {
     };
     #spaceship = new Spaceship(this.#htmlElements.ship, this.#htmlElements.container);
     #enemies = [];
+    #extras = [];
     #lives = 0;
     #score = 0;
-    #enemiesInterval = 30;
+    #enemiesInterval = 50;
     #checkPositionInterval = null;
     #createEnemyInterval = null;
+    #createExtraInterval = null;
     #audio = new Audio('../sounds/main_theme.mp3');
+    #possibleExtras = ['life', 'bullet', 'speed'];
 
     init() {
         this.#htmlElements.button.addEventListener('click', () => {
@@ -37,7 +41,7 @@ class Game {
         this.#spaceship.setPosition();
         this.#checkPositionInterval = setInterval(() => this.#checkPosition(), 1);
         this.#createEnemyInterval = setInterval(() => this.#randomEnemy(), 1000);
-        
+        this.#createExtraInterval = setInterval(() => this.#randomExtra(), 30_000);
         this.#audio.loop = true;
         this.#audio.play();
     }
@@ -49,6 +53,7 @@ class Game {
         this.#enemies.length = 0;
         clearInterval(this.#checkPositionInterval);
         clearInterval(this.#createEnemyInterval);
+        clearInterval(this.#createExtraInterval);
         this.#audio.pause();
     }
 
@@ -95,11 +100,55 @@ class Game {
                 }
             });
         });
+
+        this.#extras.forEach((extra, extraIndex, extrasArray) => {
+            const extraPosition = {
+                top: extra.element.offsetTop,
+                right: extra.element.offsetLeft + extra.element.offsetWidth,
+                bottom: extra.element.offsetTop + extra.element.offsetHeight,
+                left: extra.element.offsetLeft
+            };
+            
+            const spaceshipPosition = this.#spaceship.getCoordinates();
+            if (extraPosition.bottom >= spaceshipPosition.top &&
+                extraPosition.top <= spaceshipPosition.bottom &&
+                extraPosition.right >= spaceshipPosition.left &&
+                extraPosition.left <= spaceshipPosition.right) {
+                    this.#spaceship.collect(`../sounds/${extra.bonusType}.mp3`);
+                    extra.remove();
+                    extrasArray.splice(extraIndex, 1);
+
+                    if (extra.bonusType === 'life') {
+                        this.#lives++;
+                        this.#updateLivesText();
+                    }
+                    else if (extra.bonusType === 'bullet')
+                        this.#spaceship.increaseBullets();
+                    else
+                        this.#spaceship.increaseSpeed();
+
+                } else if (extraPosition.top > window.innerHeight) {
+                    extra.remove();
+                    extrasArray.splice(extraIndex, 1);
+                }
+                
+        })
     }
 
     #randomEnemy() {
         const randomNumber = Math.floor(Math.random() * 5) + 1;
         randomNumber % 5 === 0 ? this.#createEnemy('enemy-big', this.#enemiesInterval * 2, 'explosion-big', 3) : this.#createEnemy('enemy', this.#enemiesInterval);
+    }
+
+    #randomExtra() {
+        const randomExtraIndex = Math.floor(Math.random() * this.#possibleExtras.length);
+        this.#createExtra(this.#possibleExtras[randomExtraIndex]);
+    }
+
+    #createExtra(bonusType) {
+        const extra = new Extra(this.#htmlElements.container, bonusType, 5);
+        extra.create();
+        this.#extras.push(extra);
     }
 
     #createEnemy(enemySize, enemiesInterval, explosion = 'explosion', enemyLives = 1) {

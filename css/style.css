@@ -136,6 +136,33 @@ body {
     position: absolute;
 }
 
+.life {
+    background-image: url(../images/life.png);
+    background-size: cover;
+    z-index: 5;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+}
+
+.speed {
+    background-image: url(../images/speed.png);
+    background-size: cover;
+    z-index: 5;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+}
+
+.bullet {
+    background-image: url(../images/bullet.png);
+    background-size: cover;
+    z-index: 5;
+    width: 12px;
+    height: 24px;
+    position: absolute;
+}
+
 @keyframes move {
     0% {
         background-position-x: 0px;
